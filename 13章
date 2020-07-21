@@ -199,3 +199,76 @@ int main(void) {
 		}
 	}
 }
+//13.13
+//核心：写出转换的表达式
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void encrypt(char* message, int shift);
+
+int main(void) {
+	char message[80];
+	int shift;
+	printf("Enter message tobe encrypted: ");
+	char* str = fgets(message, 80, stdin);
+	printf("Enter shift amount(1-25): ");
+	scanf_s("%d", &shift);
+	encrypt(str, shift);
+	printf("Encryptd message：%s", message);
+}
+
+
+
+void encrypt(char* message, int shift) {
+	int i = 0;
+	while (message[i] != '\n') {
+		if (message[i] >= 'A' && message[i] <= 'Z') {
+			message[i] = (message[i] - 'A'+shift) % 26 + 'A';
+		}
+		else if (message[i] >= 'a' && message[i] <= 'z') {
+			message[i] = (message[i] - 'a'+shift) % 26 + 'a';
+		}
+		i++;
+	}
+}
+//13.14
+//核心：检测变位词的方法
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+bool are_anagrams(const char* word1, const char* word2);
+
+int main(void) {
+	char word1[50], word2[50];
+	printf("Enter first word: ");
+	char* str1 = fgets(word1, 50, stdin);
+	printf("Enter second word: ");
+	char* str2 = fgets(word2, 50, stdin);
+	if (are_anagrams(str1, str2)) printf("The words are anagrams.\n");
+	else printf("The words are not anagrams.\n");
+
+	return 0;
+}
+
+bool are_anagrams(const char* word1, const char* word2) {
+	int flag[26] = { 0 }, i = 0;
+	while (word1[i] != '\n') {
+		if (isalpha(word1[i])) {
+			flag[tolower(word1[i]) - 'a'] ++;
+		}
+		i++;
+	}
+	i = 0;
+	while (word2[i] != '\n') {
+		if (isalpha(word2[i])) {
+			flag[tolower(word2[i]) - 'a']--;
+		}
+		i++;
+	}
+	for (i = 0; i < 26; i++) {
+		if (flag[i] != 0) return false;
+	}
+	return true;
+}
