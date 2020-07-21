@@ -233,7 +233,7 @@ void encrypt(char* message, int shift) {
 	}
 }
 //13.14
-//核心：检测变位词的方法
+//核心：检测变位词的方法**********************
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -273,7 +273,7 @@ bool are_anagrams(const char* word1, const char* word2) {
 	return true;
 }
 //13.15
-//核心：1.栈的使用；2.逆波兰表示法
+//核心：1.栈的使用；2.逆波兰表示法****************
 #include <stdio.h>
 #include <string.h>
 #include <ctype.h>
@@ -354,4 +354,65 @@ int evaluate_RPN_expression(const char* expression) {
 		}
 		i++;
 	}
+}
+//13.16
+//核心：指针的算术运算
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+void reverse(char* message);
+
+int main(void) {
+	char message[50];
+	printf("Enter a message: ");
+	char* str = fgets(message, 50, stdin);
+	reverse(str);
+	printf("Reversal is : %s", message);
+	return 0;
+}
+
+void reverse(char* message) {
+	char *tail  = message+strlen(message)-2, ch;
+	int i = 0,len = strlen(message)-1;
+	while (1) {
+		ch = *(message+i);
+		*(message+i) = *(tail-i);
+		*(tail-i) = ch;
+		i++;
+		if (2 * i >= len) break;
+	}
+}
+//13.17
+//核心：对字符串的处理
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+bool is_palindrome(const char* message);
+
+int main(void) {
+	char message[50];
+	printf("Enter a message: ");
+	char* str = fgets(message, 50, stdin);
+	if (is_palindrome(str)) printf("Palindrome\n");
+	else printf("Not a Palindrome\n");
+	return 0;
+}
+
+bool is_palindrome(const char* message) {
+	int i = 0, j = strlen(message) - 2;
+	while (1) {
+		if (isalpha(message[i]) && isalpha(message[j])) {
+			if (toupper(message[i]) != toupper(message[j])) return false;
+			i++, j--;
+		}
+		else if (!isalpha(message[i])) i++;
+		else if (!isalpha(message[j])) j--;
+
+		if (i >= j) break;
+	}
+	return true;
 }
