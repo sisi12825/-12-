@@ -272,3 +272,86 @@ bool are_anagrams(const char* word1, const char* word2) {
 	}
 	return true;
 }
+//13.15
+//核心：1.栈的使用；2.逆波兰表示法
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#define STACK_SIZE 50
+
+int stack[50];
+int top = 0;
+
+int evaluate_RPN_expression(const char* expression);
+
+int main(void) {
+	char* str;
+	while (1) {
+		char expression[50];
+		printf("Enter an RPN expression: ");
+		str = fgets(expression, 50, stdin);
+		if (expression[0] < '0' || expression[0] > '9') {
+			if (expression[0] != '=' && expression[0] != '+' && expression[0] != '-' &&
+				expression[0] != '*' && expression[0] != '/')
+				break;
+		}
+		printf("Value of expression: %d\n", evaluate_RPN_expression(str));
+	}
+
+	return 0;
+}
+
+void make_empty(void) {
+	top = 0;
+}
+
+bool is_empty(void) {
+	return top == 0;
+}
+
+bool is_full(void) {
+	return top == STACK_SIZE;
+}
+
+void push(int ch) {
+	if (is_full()) {
+		printf("Expression is too complex\n");
+		exit(0);
+	}
+	else
+		stack[top++] = ch;
+}
+
+int pull(void) {
+	if (is_empty()) {
+		printf("Not enough operands in expression\n");
+		exit(0);
+	}
+	else
+		return stack[--top];
+}
+
+int evaluate_RPN_expression(const char* expression) {
+	make_empty();
+	int i = 0, result = 0;
+	while (expression[i] != '\n') {
+		if (expression[i] >= '0' && expression[i] <= '9') {
+			push(expression[i] - '0');
+		}
+		else if (expression[i] == '-' || expression[i] == '+' || expression[i] == '*'
+			|| expression[i] == '/') {
+			int oprand1 = pull();
+			int oprand2 = pull();
+			if (expression[i] == '-') push(oprand2 - oprand1);
+			else if(expression[i] == '+') push(oprand2 + oprand1);
+			else if(expression[i] == '*') push( oprand2 * oprand1);
+			else if(expression[i] == '/') push(oprand2 / oprand1);
+		} 
+		else if (expression[i] == '=') {
+			return pull();
+		}
+		i++;
+	}
+}
