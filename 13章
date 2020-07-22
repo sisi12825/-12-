@@ -416,3 +416,23 @@ bool is_palindrome(const char* message) {
 	}
 	return true;
 }
+//13.18
+//核心：1.指针数组的使用；2.scanf_s
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+
+
+int main(void) {
+	const char* months[13] = { "January\0","February\0","March\0","April\0","May\0","June\0","July\0",
+							 "August\0","September\0","October\0","November\0","December\0" };
+	int month, date, year;
+	scanf_s("%d/%d/%d", &month, &date, &year);
+
+	printf("Enter a date (mm/dd/yyyy): ");
+	printf("You entered the date %s %d, %d",months[month-1],date,year);
+
+	return 0;
+}
